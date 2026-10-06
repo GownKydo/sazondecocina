@@ -1,24 +1,59 @@
 {{ define "main" }}
 <section class="hero">
-    <h1>Recetas Tradicionales de Latinoamérica</h1>
-    <p>Explora la diversidad culinaria por países y categorías.</p>
+    <h1>Recetario Latinoamericano</h1>
+    <p>Descubre sabores autóctonos de México, Perú, Colombia, Argentina y más.</p>
+</section>
+
+<!-- Barra de Búsqueda -->
+<section class="search-container">
+    <div class="search-box">
+        <input type="text" id="recipe-search" placeholder="🔍 Buscar receta por nombre, país o categoría..." aria-label="Buscar recetas">
+        <span id="search-count" class="search-count"></span>
+    </div>
 </section>
 
 <section class="latest-recipes">
-    <h2>Últimas Recetas</h2>
+    <h2>Recetas Recientes</h2>
+    
     <div class="grid-recipes">
-        {{ range first 6 (where .Site.RegularPages "Section" "post") }}
-            <article class="card">
+        {{ range where .Site.RegularPages "Section" "post" }}
+            <!-- SINTAXIS CORREGIDA: Los atributos data-* están dentro de la etiqueta article -->
+            <article class="card" 
+                     data-title="{{ .Title | lower }}" 
+                     data-country="{{ .Params.country | default "" | lower }}" 
+                     data-category="{{ if .Params.categories }}{{ delimit .Params.categories " " | lower }}{{ end }}">
+                
                 {{ $image := .Resources.GetMatch "img/*" }}
-                {{ if $image }}
-                    <img src="{{ $image.RelPermalink }}" alt="{{ .Title }}">
-                {{ end }}
+                
+                <a href="{{ .RelPermalink }}" class="card-image-link">
+                    {{ if $image }}
+                        <img src="{{ $image.RelPermalink }}" alt="{{ .Title }}" loading="lazy">
+                    {{ else }}
+                        <div class="placeholder-img">🍲</div>
+                    {{ endif }}
+                </a>
+
                 <div class="card-content">
-                    <span class="badge">{{ .Params.country | default "Latinoamérica" }}</span>
+                    <div class="card-badges">
+                        {{ if .Params.country }}
+                            <span class="badge badge-country">{{ .Params.country }}</span>
+                        {{ end }}
+                        
+                        {{ if .Params.categories }}
+                            {{ range .Params.categories }}
+                                <span class="badge badge-category">{{ . }}</span>
+                            {{ end }}
+                        {{ end }}
+                    </div>
+
                     <h3><a href="{{ .RelPermalink }}">{{ .Title }}</a></h3>
-                    <p>{{ .Summary | truncate 100 }}</p>
+                    <p class="summary">{{ .Summary | truncate 120 }}</p>
+                    
+                    <a href="{{ .RelPermalink }}" class="read-more">Ver Receta →</a>
                 </div>
             </article>
+        {{ else }}
+            <p>No se encontraron recetas públicas. ¡Agrega una en content/post/!</p>
         {{ end }}
     </div>
 </section>

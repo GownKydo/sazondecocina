@@ -1,13 +1,27 @@
 {{ define "main" }}
 <article class="recipe-single">
+    
+    <!-- Header de la Receta -->
     <header class="recipe-header">
-        <h1>{{ .Title }}</h1>
-        <div class="meta">
-            <span><strong>País:</strong> {{ .Params.country }}</span> | 
-            <span><strong>Categoría:</strong> {{ .Params.category }}</span>
+        <div class="recipe-meta-badges">
+            {{ if .Params.country }}
+                <span class="badge badge-country">📍 {{ .Params.country }}</span>
+            {{ end }}
+            {{ if .Params.categories }}
+                {{ range .Params.categories }}
+                    <span class="badge badge-category">{{ . }}</span>
+                {{ end }}
+            {{ end }}
         </div>
+
+        <h1 class="recipe-title">{{ .Title }}</h1>
+        
+        {{ if .Description }}
+            <p class="recipe-description">{{ .Description }}</p>
+        {{ end }}
     </header>
 
+    <!-- Imagen Principal -->
     {{ $image := .Resources.GetMatch "img/*" }}
     {{ if $image }}
         <div class="recipe-banner">
@@ -15,8 +29,80 @@
         </div>
     {{ end }}
 
-    <div class="recipe-content">
-        {{ .Content }}
+    <!-- Ficha Técnica (Tiempos, Porciones, Dificultad) -->
+    <section class="recipe-info-bar">
+        {{ if .Params.prep_time }}
+            <div class="info-item">
+                <span class="info-icon">⏱️</span>
+                <div class="info-text">
+                    <span class="info-label">Preparación</span>
+                    <span class="info-value">{{ .Params.prep_time }}</span>
+                </div>
+            </div>
+        {{ end }}
+
+        {{ if .Params.cook_time }}
+            <div class="info-item">
+                <span class="info-icon">🔥</span>
+                <div class="info-text">
+                    <span class="info-label">Cocción</span>
+                    <span class="info-value">{{ .Params.cook_time }}</span>
+                </div>
+            </div>
+        {{ end }}
+
+        {{ if .Params.servings }}
+            <div class="info-item">
+                <span class="info-icon">🍽️</span>
+                <div class="info-text">
+                    <span class="info-label">Porciones</span>
+                    <span class="info-value">{{ .Params.servings }}</span>
+                </div>
+            </div>
+        {{ end }}
+
+        {{ if .Params.difficulty }}
+            <div class="info-item">
+                <span class="info-icon">👨‍🍳</span>
+                <div class="info-text">
+                    <span class="info-label">Dificultad</span>
+                    <span class="info-value">{{ .Params.difficulty }}</span>
+                </div>
+            </div>
+        {{ end }}
+    </section>
+
+    <!-- Estructura Principal: Ingredientes y Preparación -->
+    <div class="recipe-body-grid">
+        <!-- Columna 1: Ingredientes con Casillas de Verificación -->
+        <aside class="recipe-ingredients">
+            <h2>Ingredientes</h2>
+            {{ if .Params.ingredients }}
+                <ul class="ingredients-list">
+                    {{ range $index, $ingredient := .Params.ingredients }}
+                        <li class="ingredient-item">
+                            <label class="checkbox-container">
+                                <input type="checkbox" id="ing-{{ $index }}">
+                                <span class="checkmark"></span>
+                                <span class="ingredient-text">{{ $ingredient }}</span>
+                            </label>
+                        </li>
+                    {{ end }}
+                </ul>
+            {{ else }}
+                <p>El contenido Markdown normal procesará la lista de ingredientes si no está configurado en el frontmatter.</p>
+            {{ endif }}
+        </aside>
+
+        <!-- Columna 2: Pasos de Preparación (Contenido Markdown) -->
+        <div class="recipe-instructions">
+            <h2>Instrucciones</h2>
+            <div class="markdown-content">
+                {{ .Content }}
+            </div>
+        </div>
+
     </div>
+
 </article>
 {{ end }}

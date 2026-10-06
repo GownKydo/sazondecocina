@@ -2,21 +2,21 @@
 title: "Tacos al Pastor"
 date: 2026-10-06
 country: "México"
-categories: ["Platillo Principal", "Comida Callejera"]
-tags: ["Cerdo", "Tacos", "Picante"]
+categories: ["Plato Principal", "Tacos"]
+prep_time: "30 min"
+cook_time: "20 min"
+servings: "4 personas"
+difficulty: "Media"
+ingredients:
+  - "500g de lomo de cerdo"
+  - "3 chiles guajillo hidratados"
+  - "1/4 de taza de jugo de piña"
+  - "Tortillas de maíz"
+  - "Cilantro y cebolla picada"
 ---
 
-# Tacos al Pastor Tradicionales
+### Preparación
 
-Los tacos al pastor son uno de los platillos más icónicos de la Ciudad de México.
-
-## Ingredientes
-- 1 kg de carne de cerdo
-- 3 chiles guajillo
-- 1/4 de taza de vinagre
-- Piña fresca, cebolla y cilantro
-
-## Preparación
-1. Marinar la carne con la pasta de chiles y especias.
-2. Cocinar a fuego alto.
-3. Servir en tortillas de maíz calientes con piña, cebolla y cilantro.
+1. **Marinar la carne**: Licúa los chiles con el jugo de piña y especias, y marina el cerdo durante 2 horas.
+2. **Cocción**: Cocina la carne en una sartén caliente hasta que esté bien dorada.
+3. **Servir**: Arma los tacos con tortillas calientes, piña fresca, cilantro y cebolla.

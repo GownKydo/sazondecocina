@@ -1,0 +1,57 @@
+{{ define "main" }}
+<section class="list-header">
+    <span class="list-subtitle">Filtrado por:</span>
+    <h1>{{ .Title }}</h1>
+    <p>Mostrando {{ len .Pages }} {{ if eq (len .Pages) 1 }}receta disponible{{ else }}recetas disponibles{{ end }}</p>
+</section>
+
+<!-- Barra de Búsqueda -->
+<section class="search-container">
+    <div class="search-box">
+        <input type="text" id="recipe-search" placeholder="🔍 Filtrar en esta sección..." aria-label="Buscar recetas">
+        <span id="search-count" class="search-count"></span>
+    </div>
+</section>
+
+<section class="grid-recipes">
+    {{ range .Pages }}
+        <!-- SINTAXIS CORREGIDA: Los atributos data-* están dentro de la etiqueta article -->
+        <article class="card" 
+                 data-title="{{ .Title | lower }}" 
+                 data-country="{{ .Params.country | default "" | lower }}" 
+                 data-category="{{ if .Params.categories }}{{ delimit .Params.categories " " | lower }}{{ end }}">
+            
+            {{ $image := .Resources.GetMatch "img/*" }}
+            
+            <a href="{{ .RelPermalink }}" class="card-image-link">
+                {{ if $image }}
+                    <img src="{{ $image.RelPermalink }}" alt="{{ .Title }}" loading="lazy">
+                {{ else }}
+                    <div class="placeholder-img">🍲</div>
+                {{ endif }}
+            </a>
+
+            <div class="card-content">
+                <div class="card-badges">
+                    {{ if .Params.country }}
+                        <span class="badge badge-country">{{ .Params.country }}</span>
+                    {{ end }}
+                    
+                    {{ if .Params.categories }}
+                        {{ range .Params.categories }}
+                            <span class="badge badge-category">{{ . }}</span>
+                        {{ end }}
+                    {{ end }}
+                </div>
+
+                <h3><a href="{{ .RelPermalink }}">{{ .Title }}</a></h3>
+                <p class="summary">{{ .Summary | truncate 110 }}</p>
+                
+                <a href="{{ .RelPermalink }}" class="read-more">Ver Receta →</a>
+            </div>
+        </article>
+    {{ else }}
+        <p>No hay recetas registradas en esta sección todavía.</p>
+    {{ end }}
+</section>
+{{ end }}

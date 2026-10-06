@@ -1,0 +1,22 @@
+{{ define "main" }}
+<article class="recipe-single">
+    <header class="recipe-header">
+        <h1>{{ .Title }}</h1>
+        <div class="meta">
+            <span><strong>País:</strong> {{ .Params.country }}</span> | 
+            <span><strong>Categoría:</strong> {{ .Params.category }}</span>
+        </div>
+    </header>
+
+    {{ $image := .Resources.GetMatch "img/*" }}
+    {{ if $image }}
+        <div class="recipe-banner">
+            <img src="{{ $image.RelPermalink }}" alt="{{ .Title }}">
+        </div>
+    {{ end }}
+
+    <div class="recipe-content">
+        {{ .Content }}
+    </div>
+</article>
+{{ end }}

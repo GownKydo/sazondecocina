@@ -1,0 +1,9 @@
+baseURL = 'https://ejemplo.com/'
+languageCode = 'es-es'
+title = 'Recetario Latinoamericano'
+theme = '' # Usaremos nuestro propio diseño personalizado
+
+[taxonomies]
+  category = 'categories'
+  tag = 'tags'
+  country = 'countries'

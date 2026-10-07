@@ -12,18 +12,16 @@ document.addEventListener('DOMContentLoaded', () => {
     const systemPrefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
 
     // Determinar el tema activo inicial
-    let activeTheme = savedTheme || (systemPrefersDark ? 'dark' : 'light');
+    const initialTheme = savedTheme || (systemPrefersDark ? 'dark' : 'light');
 
-    // Aplicar tema e ícono al cargar la página
-    if (savedTheme) {
-        rootElement.setAttribute('data-theme', savedTheme);
-    }
-    updateButtonIcon(activeTheme);
+    // Aplicar siempre el atributo data-theme e ícono al cargar la página
+    rootElement.setAttribute('data-theme', initialTheme);
+    updateButtonIcon(initialTheme);
 
     // Evento de clic para alternar tema
     if (themeToggleBtn) {
         themeToggleBtn.addEventListener('click', () => {
-            const currentTheme = rootElement.getAttribute('data-theme') || (systemPrefersDark ? 'dark' : 'light');
+            const currentTheme = rootElement.getAttribute('data-theme');
             const newTheme = currentTheme === 'dark' ? 'light' : 'dark';
 
             rootElement.setAttribute('data-theme', newTheme);
@@ -36,6 +34,7 @@ document.addEventListener('DOMContentLoaded', () => {
     function updateButtonIcon(theme) {
         if (themeToggleBtn) {
             themeToggleBtn.textContent = theme === 'dark' ? '☀️' : '🌙';
+            themeToggleBtn.setAttribute('aria-label', `Cambiar a modo ${theme === 'dark' ? 'claro' : 'oscuro'}`);
         }
     }
 
@@ -56,16 +55,16 @@ document.addEventListener('DOMContentLoaded', () => {
                 const country = card.getAttribute('data-country') || '';
                 const category = card.getAttribute('data-category') || '';
 
-                // Verifica si la consulta coincide con el título, país o categoría
+                // Verifica si la consulta coincide con título, país o categoría
                 const matches = title.includes(query) || 
                                 country.includes(query) || 
                                 category.includes(query);
 
                 if (matches) {
-                    card.classList.remove('hidden');
+                    card.style.display = '';
                     visibleCount++;
                 } else {
-                    card.classList.add('hidden');
+                    card.style.display = 'none';
                 }
             });
 
@@ -73,6 +72,8 @@ document.addEventListener('DOMContentLoaded', () => {
             if (searchCount) {
                 if (query === '') {
                     searchCount.textContent = '';
+                } else if (visibleCount === 0) {
+                    searchCount.textContent = 'No se encontraron recetas con esa búsqueda.';
                 } else {
                     searchCount.textContent = `Mostrando ${visibleCount} de ${recipeCards.length} recetas`;
                 }

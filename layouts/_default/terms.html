@@ -1,17 +1,24 @@
 {{ define "main" }}
 <section class="taxonomy-header">
+    <span class="list-subtitle">Explora por {{ .Title | lower }}</span>
     <h1>{{ .Title }}</h1>
-    <p>Explora nuestras recetas agrupadas por {{ .Title | lower }}.</p>
+    <p>Selecciona una opción para filtrar las recetas disponibles.</p>
 </section>
 
-<section class="terms-grid">
+<div class="terms-grid">
+    <!-- Recorremos todos los términos registrados en la taxonomía (países o categorías) -->
     {{ range .Data.Terms.ByCount }}
         <a href="{{ .Page.RelPermalink }}" class="term-card">
-            <span class="term-name">{{ .Page.Title }}</span>
-            <span class="term-count">{{ .Count }} {{ if eq .Count 1 }}receta{{ else }}recetas{{ end }}</span>
+            <div class="term-content">
+                <h3 class="term-name">{{ .Page.Title }}</h3>
+                <span class="term-count">
+                    {{ .Count }} {{ if eq .Count 1 }}receta{{ else }}recetas{{ end }}
+                </span>
+            </div>
+            <span class="term-arrow">→</span>
         </a>
     {{ else }}
-        <p>No se encontraron {{ .Title | lower }}.</p>
+        <p>No se encontraron términos registrados.</p>
     {{ end }}
-</section>
+</div>
 {{ end }}

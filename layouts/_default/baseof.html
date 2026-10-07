@@ -1,23 +1,24 @@
 <!DOCTYPE html>
-<html lang="es">
+<html lang="{{ .Site.LanguageCode | default "es" }}">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>{{ block "title" . }}{{ .Site.Title }}{{ end }}</title>
-    <!-- Estilos CSS globales -->
-    <link rel="stylesheet" href="/css/style.css">
+    <title>{{ if .IsHome }}{{ .Site.Title }}{{ else }}{{ .Title }} | {{ .Site.Title }}{{ end }}</title>
+    
+    {{ $style := resources.Get "css/main.css" | resources.Minify | resources.Fingerprint }}
+    <link rel="stylesheet" href="{{ $style.RelPermalink }}" integrity="{{ $style.Data.Integrity }}">
 </head>
 <body>
 
+    <!-- Parcial Header -->
     {{ partial "header.html" . }}
 
     <main class="container">
         {{ block "main" . }}{{ end }}
     </main>
 
+    <!-- Parcial Footer (Incluye el script app.js) -->
     {{ partial "footer.html" . }}
 
-    <!-- Scripts JS globales -->
-    <script src="/js/app.js"></script>
 </body>
 </html>

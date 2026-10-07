@@ -1,0 +1,24 @@
+{{ if .IsPage }}
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org/",
+  "@type": "Recipe",
+  "name": "{{ .Title }}",
+  "description": "{{ .Description }}",
+  "keywords": "{{ if .Params.categories }}{{ delimit .Params.categories ", " }}{{ end }}",
+  "author": {
+    "@type": "Organization",
+    "name": "{{ .Site.Title }}"
+  },
+  "prepTime": "PT{{ .Params.prep_time }}",
+  "recipeYield": "{{ .Params.servings }}",
+  "recipeCategory": "{{ if .Params.categories }}{{ index .Params.categories 0 }}{{ end }}",
+  "recipeCuisine": "{{ .Params.country }}",
+  "recipeIngredient": [
+    {{ range $i, $ing := .Params.ingredients }}
+      {{ if $i }},{{ end }}"{{ $ing }}"
+    {{ end }}
+  ]
+}
+</script>
+{{ end }}

@@ -7,3 +7,5 @@ theme = '' # Usaremos nuestro propio diseño personalizado
   category = 'categories'
   tag = 'tags'
   country = 'countries'
+  
+enableRobotsTXT = true

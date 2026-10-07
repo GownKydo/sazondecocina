@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{ block "title" . }}{{ .Site.Title }}{{ end }}</title>
+    <!-- Estilos CSS globales -->
+    <link rel="stylesheet" href="/css/style.css">
+</head>
+<body>
+
+    {{ partial "header.html" . }}
+
+    <main class="container">
+        {{ block "main" . }}{{ end }}
+    </main>
+
+    {{ partial "footer.html" . }}
+
+    <!-- Scripts JS globales -->
+    <script src="/js/app.js"></script>
+</body>
+</html>

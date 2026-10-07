@@ -1,5 +1,13 @@
-<footer class="main-footer">
-    <p>&copy; {{ now.Format "2006" }} {{ .Site.Title }}. Todos los derechos reservados.</p>
+<footer class="site-footer">
+    <div class="footer-container">
+        <p>&copy; {{ now.Format "2006" }} {{ .Site.Title }}. Todos los derechos reservados.</p>
+        
+        <nav class="footer-nav">
+            <a href="{{ "/acerca/" | relLangURL }}">Acerca de</a> |
+            <a href="{{ "/contacto/" | relLangURL }}">Contacto</a> |
+            <a href="{{ "/privacidad/" | relLangURL }}">Política de Privacidad</a>
+        </nav>
+    </div>
 </footer>
 
 <!-- Procesamiento dinámico de JS en Hugo Pipes -->

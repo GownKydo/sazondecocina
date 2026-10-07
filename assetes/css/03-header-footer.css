@@ -64,6 +64,13 @@
     font-size: 0.9rem;
 }
 
+/* Estado activo para el menú de navegación */
+.main-nav a.active {
+    font-weight: 700;
+    border-bottom: 2px solid #ffffff;
+    opacity: 1;
+}
+
 /* ==========================================================================
    ADAPTATIVO / RESPONSIVO (MÓVILES)
    ========================================================================== */

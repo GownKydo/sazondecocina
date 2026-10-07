@@ -1,3 +1,7 @@
 <footer class="main-footer">
-    <p>&copy; {{ now.Format "2006" }} Recetario Latinoamericano. Creado con Hugo.</p>
+    <p>&copy; {{ now.Format "2006" }} {{ .Site.Title }}. Todos los derechos reservados.</p>
 </footer>
+
+<!-- Procesamiento dinámico de JS en Hugo Pipes -->
+{{ $js := resources.Get "js/app.js" | resources.Minify | resources.Fingerprint }}
+<script src="{{ $js.RelPermalink }}" integrity="{{ $js.Data.Integrity }}"></script>

@@ -1,15 +1,16 @@
 <header class="main-header">
     <div class="logo">
-        <a href="/">🍲 Sabor Latino</a>
+        <a href="{{ .Site.Home.RelPermalink }}">🌮 Recetario Latino</a>
     </div>
+
     <nav class="main-nav">
         <ul>
-            <li><a href="/">Inicio</a></li>
-            <li><a href="/post/">Todas las Recetas</a></li>
-            <li><a href="/countries/">Países</a></li>
-            <li><a href="/categories/">Categorías</a></li>
+            <li><a href="{{ .Site.Home.RelPermalink }}">Inicio</a></li>
+            <li><a href="{{ "categories/" | relURL }}">Categorías</a></li>
+            <li><a href="{{ "countries/" | relURL }}">Países</a></li>
             <li>
-                <button id="theme-toggle" aria-label="Cambiar tema" class="theme-btn">🌙</button>
+                <!-- Botón de Modo Oscuro/Claro integrado con app.js -->
+                <button id="theme-toggle" class="theme-btn" type="button" aria-label="Cambiar tema">🌙</button>
             </li>
         </ul>
     </nav>

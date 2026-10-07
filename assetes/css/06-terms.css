@@ -1,0 +1,67 @@
+/* ==========================================================================
+   TAXONOMÍAS Y TÉRMINOS (/categories/ y /countries/)
+   ========================================================================== */
+
+.taxonomy-header, 
+.list-header {
+    margin-bottom: 2rem;
+    text-align: center;
+}
+
+.list-subtitle {
+    font-size: 0.85rem;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    color: var(--text-muted);
+}
+
+/* Grilla de Términos */
+.terms-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+    gap: 1.25rem;
+    margin-top: 2rem;
+}
+
+/* Tarjeta de Término unificada */
+.term-card {
+    background: var(--bg-card);
+    border-radius: var(--radius-lg);
+    padding: 1.5rem;
+    box-shadow: var(--shadow);
+    border: 1px solid transparent;
+    text-decoration: none;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    transition: transform var(--transition), box-shadow var(--transition), border-color var(--transition);
+}
+
+.term-card:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.12);
+    border-color: var(--primary-color);
+}
+
+.term-name {
+    font-size: 1.15rem;
+    font-weight: bold;
+    color: var(--text-color);
+    margin-bottom: 0.25rem;
+}
+
+.term-count {
+    font-size: 0.85rem;
+    color: var(--text-muted);
+}
+
+.term-arrow {
+    font-size: 1.2rem;
+    color: var(--primary-color);
+    font-weight: bold;
+    transition: transform var(--transition);
+}
+
+.term-card:hover .term-arrow {
+    transform: translateX(4px);
+}

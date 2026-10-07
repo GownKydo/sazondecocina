@@ -1,0 +1,55 @@
+/* ==========================================================================
+   01. VARIABLES Y TEMAS (LIGHT / DARK)
+   ========================================================================== */
+
+:root {
+    /* Colores principales */
+    --primary-color: #d9381e;
+    --bg-body: #f9f9f9;
+    --bg-card: #ffffff;
+    --text-color: #222222;
+    --text-muted: #666666;
+    --border-color: #e2e8f0;
+
+    /* Badges */
+    --badge-country-bg: #e0f2fe;
+    --badge-country-text: #0369a1;
+    --badge-cat-bg: #fef3c7;
+    --badge-cat-text: #92400e;
+
+    /* Geometría y Sombras */
+    --radius-sm: 8px;
+    --radius-lg: 12px;
+    --shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+    --transition: 0.3s ease;
+}
+
+/* Modo oscuro automático por preferencia del sistema */
+@media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) {
+        --bg-body: #121212;
+        --bg-card: #1e1e1e;
+        --text-color: #e0e0e0;
+        --text-muted: #a0a0a0;
+        --border-color: #2d2d2d;
+        --badge-country-bg: #1e293b;
+        --badge-country-text: #38bdf8;
+        --badge-cat-bg: #451a03;
+        --badge-cat-text: #fcd34d;
+        --shadow: 0 4px 12px rgba(0, 0, 0, 0.4);
+    }
+}
+
+/* Modo oscuro forzado manualmente con atributo */
+:root[data-theme="dark"] {
+    --bg-body: #121212;
+    --bg-card: #1e1e1e;
+    --text-color: #e0e0e0;
+    --text-muted: #a0a0a0;
+    --border-color: #2d2d2d;
+    --badge-country-bg: #1e293b;
+    --badge-country-text: #38bdf8;
+    --badge-cat-bg: #451a03;
+    --badge-cat-text: #fcd34d;
+    --shadow: 0 4px 12px rgba(0, 0, 0, 0.4);
+}

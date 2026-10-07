@@ -1,60 +1,114 @@
 {{ define "main" }}
-<section class="hero">
-    <h1>Recetario Latinoamericano</h1>
-    <p>Descubre sabores autóctonos de México, Perú, Colombia, Argentina y más.</p>
-</section>
 
-<!-- Barra de Búsqueda -->
-<section class="search-container">
-    <div class="search-box">
-        <input type="text" id="recipe-search" placeholder="🔍 Buscar receta por nombre, país o categoría..." aria-label="Buscar recetas">
-        <span id="search-count" class="search-count"></span>
+<!-- 1. SECCIÓN HERO Y BUSCADOR -->
+<section class="hero-section">
+    <div class="hero-content">
+        <span class="hero-badge">🌮 Recetario Latinoamericano</span>
+        <h1 class="hero-title">Sabores y Tradiciones de Nuestra Tierra</h1>
+        <p class="hero-subtitle">Explora recetas auténticas paso a paso desde México hasta Argentina.</p>
+        
+        <!-- Buscador integrado con app.js -->
+        <div class="search-wrapper">
+            <div class="search-box">
+                <span class="search-icon">🔍</span>
+                <input 
+                    type="text" 
+                    id="recipe-search" 
+                    placeholder="Buscar por receta, país o categoría (ej. Tacos, México, Postres)..." 
+                    aria-label="Buscar recetas"
+                >
+            </div>
+            <!-- Indicador dinámico de resultados -->
+            <p id="search-count" class="search-count-text"></p>
+        </div>
     </div>
 </section>
 
-<section class="latest-recipes">
-    <h2>Recetas Recientes</h2>
-    
+<!-- 2. GRILLA DE RECETAS DESTACADAS -->
+<section class="recipes-section">
+    <div class="section-header">
+        <h2>Todas las Recetas</h2>
+        <p>Descubre el arte gastronómico de la región</p>
+    </div>
+
     <div class="grid-recipes">
-        {{ range where .Site.RegularPages "Section" "post" }}
-            <!-- SINTAXIS CORREGIDA: Los atributos data-* están dentro de la etiqueta article -->
-            <article class="card" 
-                     data-title="{{ .Title | lower }}" 
-                     data-country="{{ .Params.country | default "" | lower }}" 
-                     data-category="{{ if .Params.categories }}{{ delimit .Params.categories " " | lower }}{{ end }}">
-                
-                {{ $image := .Resources.GetMatch "img/*" }}
-                
-                <a href="{{ .RelPermalink }}" class="card-image-link">
+        {{ range where .Site.RegularPages "Section" "in" (slice "post" "recipes" "recetas") }}
+            {{ $title := .Title }}
+            
+            {{/* Normalización de País (acepta .Params.country o .Params.countries) */}}
+            {{ $countryVal := .Params.country | default .Params.countries }}
+            {{ $countryStr := "" }}
+            {{ if reflect.IsSlice $countryVal }}
+                {{ $countryStr = delimit $countryVal " " }}
+            {{ else if $countryVal }}
+                {{ $countryStr = printf "%v" $countryVal }}
+            {{ end }}
+
+            {{/* Normalización de Categorías */}}
+            {{ $categoryStr := "" }}
+            {{ with .Params.categories }}
+                {{ if reflect.IsSlice . }}
+                    {{ $categoryStr = delimit . " " }}
+                {{ else }}
+                    {{ $categoryStr = printf "%v" . }}
+                {{ end }}
+            {{ end }}
+
+            <!-- Atributos data-* requeridos por app.js para el filtrado en vivo -->
+            <article 
+                class="card" 
+                data-title="{{ $title | lower }}" 
+                data-country="{{ $countryStr | lower }}" 
+                data-category="{{ $categoryStr | lower }}"
+            >
+                <div class="card-image">
+                    {{/* Manejo de imagen: Prioriza Page Resource "img/*", luego Front Matter .Params.image */}}
+                    {{ $image := .Resources.GetMatch "img/*" }}
                     {{ if $image }}
                         <img src="{{ $image.RelPermalink }}" alt="{{ .Title }}" loading="lazy">
+                    {{ else if .Params.image }}
+                        <img src="{{ .Params.image | relURL }}" alt="{{ .Title }}" loading="lazy">
                     {{ else }}
-                        <div class="placeholder-img">🍲</div>
-                    {{ endif }}
-                </a>
+                        <div class="card-placeholder">🍳</div>
+                    {{ end }}
+
+                    {{ if $countryStr }}
+                        <span class="badge country-badge">📍 {{ $countryStr }}</span>
+                    {{ end }}
+                </div>
 
                 <div class="card-content">
-                    <div class="card-badges">
-                        {{ if .Params.country }}
-                            <span class="badge badge-country">{{ .Params.country }}</span>
+                    {{ with .Params.categories }}
+                        <span class="card-category">
+                            {{ if reflect.IsSlice . }}{{ index . 0 }}{{ else }}{{ . }}{{ end }}
+                        </span>
+                    {{ end }}
+
+                    <h3 class="card-title">
+                        <a href="{{ .RelPermalink }}">{{ .Title }}</a>
+                    </h3>
+
+                    <p class="card-description">
+                        {{ .Description | default (.Summary | truncate 100) }}
+                    </p>
+
+                    <div class="card-meta">
+                        {{ if .Params.prep_time }}
+                            <span>⏱️ {{ .Params.prep_time }}</span>
                         {{ end }}
-                        
-                        {{ if .Params.categories }}
-                            {{ range .Params.categories }}
-                                <span class="badge badge-category">{{ . }}</span>
-                            {{ end }}
+                        {{ if .Params.servings }}
+                            <span>🍽️ {{ .Params.servings }}</span>
+                        {{ end }}
+                        {{ if .Params.difficulty }}
+                            <span>👨‍🍳 {{ .Params.difficulty }}</span>
                         {{ end }}
                     </div>
-
-                    <h3><a href="{{ .RelPermalink }}">{{ .Title }}</a></h3>
-                    <p class="summary">{{ .Summary | truncate 120 }}</p>
-                    
-                    <a href="{{ .RelPermalink }}" class="read-more">Ver Receta →</a>
                 </div>
             </article>
         {{ else }}
-            <p>No se encontraron recetas públicas. ¡Agrega una en content/post/!</p>
+            <p class="no-recipes">Aún no hay recetas publicadas en el sitio.</p>
         {{ end }}
     </div>
 </section>
+
 {{ end }}

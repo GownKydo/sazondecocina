@@ -8,4 +8,36 @@ theme = '' # Usaremos nuestro propio diseño personalizado
   tag = 'tags'
   country = 'countries'
   
+[menu]
+
+  [[menu.main]]
+    name = 'Inicio'
+    url = '/'
+    weight = 1
+
+  [[menu.main]]
+    name = 'Recetas'
+    url = '/post/'
+    weight = 2
+
+  [[menu.main]]
+    name = 'Categorías'
+    url = '/categories/'
+    weight = 3
+
+  [[menu.main]]
+    name = 'Países'
+    url = '/countries/'
+    weight = 4
+
+  [[menu.main]]
+    name = 'Acerca de'
+    url = '/acerca/'
+    weight = 5
+
+  [[menu.main]]
+    name = 'Contacto'
+    url = '/contacto/'
+    weight = 6
+
 enableRobotsTXT = true

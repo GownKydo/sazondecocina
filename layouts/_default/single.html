@@ -1,6 +1,5 @@
 {{ define "main" }}
 <article class="recipe-single">
-    
     <!-- Header de la Receta -->
     <header class="recipe-header">
         <div class="recipe-meta-badges">
@@ -13,9 +12,7 @@
                 {{ end }}
             {{ end }}
         </div>
-
         <h1 class="recipe-title">{{ .Title }}</h1>
-        
         {{ if .Description }}
             <p class="recipe-description">{{ .Description }}</p>
         {{ end }}
@@ -40,7 +37,6 @@
                 </div>
             </div>
         {{ end }}
-
         {{ if .Params.cook_time }}
             <div class="info-item">
                 <span class="info-icon">🔥</span>
@@ -50,7 +46,6 @@
                 </div>
             </div>
         {{ end }}
-
         {{ if .Params.servings }}
             <div class="info-item">
                 <span class="info-icon">🍽️</span>
@@ -60,7 +55,6 @@
                 </div>
             </div>
         {{ end }}
-
         {{ if .Params.difficulty }}
             <div class="info-item">
                 <span class="info-icon">👨‍🍳</span>
@@ -91,7 +85,7 @@
                 </ul>
             {{ else }}
                 <p>El contenido Markdown normal procesará la lista de ingredientes si no está configurado en el frontmatter.</p>
-            {{ endif }}
+            {{ end }}
         </aside>
 
         <!-- Columna 2: Pasos de Preparación (Contenido Markdown) -->
@@ -101,8 +95,6 @@
                 {{ .Content }}
             </div>
         </div>
-
     </div>
-
 </article>
 {{ end }}

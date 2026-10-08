@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>{{ if .IsHome }}{{ .Site.Title }}{{ else }}{{ .Title }} | {{ .Site.Title }}{{ end }}</title>
-    
+
     {{ partial "seo-schema.html" . }}
     {{ template "_internal/opengraph.html" . }}
     {{ template "_internal/twitter_cards.html" . }}
@@ -17,11 +17,11 @@
         (resources.Get "css/05-cards-recipes.css")
         (resources.Get "css/06-terms.css")
         (resources.Get "css/07-single-recipe.css")
-        resources.Concat "css/main.css"
+        | resources.Concat "css/main.css"
     }}
-    {{ $style := $styles | resources.Minify | resources.Fingerprint }}
 
-<link rel="stylesheet" href="{{ $style.RelPermalink }}" integrity="{{ $style.Data.Integrity }}">
+    {{ $style := $styles | resources.Minify | resources.Fingerprint }}
+    <link rel="stylesheet" href="{{ $style.RelPermalink }}" integrity="{{ $style.Data.Integrity }}">
 </head>
 <body>
     <!-- Parcial Header -->
@@ -29,7 +29,6 @@
     <main class="container">
         {{ block "main" . }}{{ end }}
     </main>
-
     <!-- Parcial Footer (Incluye el script app.js) -->
     {{ partial "footer.html" . }}
 </body>

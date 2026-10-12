@@ -3,13 +3,26 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    
+    <!-- Título optimizado -->
     <title>{{ if .IsHome }}{{ .Site.Title }}{{ else }}{{ .Title }} | {{ .Site.Title }}{{ end }}</title>
 
-    {{ partial "seo-schema.html" . }}
-    {{ template "_internal/opengraph.html" . }}
-    {{ template "_internal/twitter_cards.html" . }}
+    <!-- Meta descripción (Crítica para SEO si no está en el partial de SEO) -->
+    {{ with .Description -}}
+    <meta name="description" content="{{ . }}">
+    {{- else -}}
+    <meta name="description" content="{{ .Site.Params.description | default .Site.Title }}">
+    {{- end }}
 
-    {{ $styles := slice
+    <!-- Canonical URL para evitar contenido duplicado -->
+    <link rel="canonical" href="{{ .Permalink }}">
+
+    <!-- Precargar fuentes críticas o dominios externos si usas Google Fonts/CDNs -->
+    <!-- <link rel="preconnect" href="https://fonts.googleapis.com"> -->
+    <!-- <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin> -->
+
+    <!-- Carga de CSS optimizada con Hugo Pipes -->
+    {{ $cssFiles := slice
         (resources.Get "css/01-variables.css")
         (resources.Get "css/02-base.css")
         (resources.Get "css/03-header-footer.css")
@@ -17,19 +30,36 @@
         (resources.Get "css/05-cards-recipes.css")
         (resources.Get "css/06-terms.css")
         (resources.Get "css/07-single-recipe.css")
-        | resources.Concat "css/main.css"
     }}
+    
+    {{ $style := $cssFiles | resources.Concat "css/main.css" | resources.Minify | resources.Fingerprint }}
+    <link rel="stylesheet" href="{{ $style.RelPermalink }}" integrity="{{ $style.Data.Integrity }}" crossorigin="anonymous">
 
-    {{ $style := $styles | resources.Minify | resources.Fingerprint }}
-    <link rel="stylesheet" href="{{ $style.RelPermalink }}" integrity="{{ $style.Data.Integrity }}">
+    <!-- SEO y Redes Sociales -->
+    {{ partial "seo-schema.html" . }}
+    {{ template "_internal/opengraph.html" . }}
+    {{ template "_internal/twitter_cards.html" . }}
+
+    <!-- Favicons recomendados -->
+    <link rel="icon" type="image/png" href="{{ "favicon.png" | relURL }}">
+    <!-- <link rel="apple-touch-icon" href="{{ "apple-touch-icon.png" | relURL }}"> -->
 </head>
-<body>
+<body class="{{ if .IsHome }}home{{ else }}page-{{ .Section }}{{ end }}">
+    
+    <!-- Saltos de accesibilidad para lectores de pantalla -->
+    <a class="skip-link" href="#main-content">{{ i18n "skip_to_content" | default "Saltar al contenido principal" }}</a>
+
     <!-- Parcial Header -->
     {{ partial "header.html" . }}
-    <main class="container">
+
+    <main id="main-content" class="container">
         {{ block "main" . }}{{ end }}
     </main>
+
     <!-- Parcial Footer (Incluye el script app.js) -->
     {{ partial "footer.html" . }}
+
+    <!-- Si necesitas scripts globales al final del body -->
+    {{ block "scripts" . }}{{ end }}
 </body>
 </html>

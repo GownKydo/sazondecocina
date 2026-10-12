@@ -1,76 +1,98 @@
+/**
+ * @version 2.0.0
+*/
 document.addEventListener('DOMContentLoaded', () => {
-    console.log('Recetario Latinoamericano cargado correctamente.');
+    'use strict';
 
-    // -----------------------------------------------------------------
-    // 1. LÓGICA DE CAMBIO DE TEMA (MODO OSCURO / CLARO)
-    // -----------------------------------------------------------------
+    // Inicializar módulos
+    initThemeManager();
+    initLiveSearch();
+});
+
+/**
+ * 1. GESTOR DE TEMA (MODO OSCURO / CLARO)
+ */
+function initThemeManager() {
     const themeToggleBtn = document.getElementById('theme-toggle');
     const rootElement = document.documentElement;
 
-    // Obtener tema guardado o detectar preferencia del sistema
-    const savedTheme = localStorage.getItem('theme');
-    const systemPrefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+    if (!themeToggleBtn) return;
 
-    // Determinar el tema activo inicial
-    const initialTheme = savedTheme || (systemPrefersDark ? 'dark' : 'light');
+    // Sincronizar el estado del botón con el tema actual ya renderizado por el script inline del head
+    const currentTheme = rootElement.getAttribute('data-theme') || 'light';
+    updateButtonState(themeToggleBtn, currentTheme);
 
-    // Aplicar siempre el atributo data-theme e ícono al cargar la página
-    rootElement.setAttribute('data-theme', initialTheme);
-    updateButtonIcon(initialTheme);
+    themeToggleBtn.addEventListener('click', () => {
+        const activeTheme = rootElement.getAttribute('data-theme') === 'dark' ? 'light' : 'dark';
+        
+        // Aplicar atributos y persistencia
+        rootElement.setAttribute('data-theme', activeTheme);
+        localStorage.setItem('theme', activeTheme);
+        
+        updateButtonState(themeToggleBtn, activeTheme);
+    });
+}
 
-    // Evento de clic para alternar tema
-    if (themeToggleBtn) {
-        themeToggleBtn.addEventListener('click', () => {
-            const currentTheme = rootElement.getAttribute('data-theme');
-            const newTheme = currentTheme === 'dark' ? 'light' : 'dark';
+/**
+ * Actualiza el texto, ícono y accesibilidad del botón de tema
+ */
+function updateButtonState(button, theme) {
+    const isDark = theme === 'dark';
+    button.textContent = isDark ? '☀️' : '🌙';
+    button.setAttribute('aria-label', isDark ? 'Cambiar a modo claro' : 'Cambiar a modo oscuro');
+    button.setAttribute('aria-pressed', isDark);
+}
 
-            rootElement.setAttribute('data-theme', newTheme);
-            localStorage.setItem('theme', newTheme);
-            updateButtonIcon(newTheme);
-        });
-    }
 
-    // Función auxiliar para actualizar el ícono del botón
-    function updateButtonIcon(theme) {
-        if (themeToggleBtn) {
-            themeToggleBtn.textContent = theme === 'dark' ? '☀️' : '🌙';
-            themeToggleBtn.setAttribute('aria-label', `Cambiar a modo ${theme === 'dark' ? 'claro' : 'oscuro'}`);
-        }
-    }
-
-    // -----------------------------------------------------------------
-    // 2. LÓGICA DEL BUSCADOR EN TIEMPO REAL
-    // -----------------------------------------------------------------
+/**
+ * Normalización de tildes y control de rendimiento (debounce).
+ */
+function initLiveSearch() {
     const searchInput = document.getElementById('recipe-search');
     const recipeCards = document.querySelectorAll('.grid-recipes .card');
     const searchCount = document.getElementById('search-count');
 
-    if (searchInput && recipeCards.length > 0) {
-        searchInput.addEventListener('input', (e) => {
-            const query = e.target.value.toLowerCase().trim();
+    if (!searchInput || recipeCards.length === 0) return;
+
+    // Función auxiliar para limpiar acentos y mayúsculas (Búsqueda tolerante)
+    const normalizeText = (text) => {
+        return text
+            .toLowerCase()
+            .normalize('NFD')
+            .replace(/[\u0300-\u036f]/g, '');
+    };
+
+    // Control de rendimiento (Debounce: espera 200ms tras dejar de escribir)
+    let debounceTimer;
+
+    searchInput.addEventListener('input', (e) => {
+        clearTimeout(debounceTimer);
+        
+        debounceTimer = setTimeout(() => {
+            const rawQuery = e.target.value.trim();
+            const query = normalizeText(rawQuery);
             let visibleCount = 0;
 
             recipeCards.forEach((card) => {
-                const title = card.getAttribute('data-title') || '';
-                const country = card.getAttribute('data-country') || '';
-                const category = card.getAttribute('data-category') || '';
+                const title = normalizeText(card.getAttribute('data-title') || '');
+                const country = normalizeText(card.getAttribute('data-country') || '');
+                const category = normalizeText(card.getAttribute('data-category') || '');
 
-                // Verifica si la consulta coincide con título, país o categoría
                 const matches = title.includes(query) || 
                                 country.includes(query) || 
                                 category.includes(query);
 
                 if (matches) {
-                    card.style.display = '';
+                    card.classList.remove('is-hidden');
                     visibleCount++;
                 } else {
-                    card.style.display = 'none';
+                    card.classList.add('is-hidden');
                 }
             });
 
-            // Actualiza el indicador de resultados encontrados
+            // Actualizar contador con accesibilidad
             if (searchCount) {
-                if (query === '') {
+                if (rawQuery === '') {
                     searchCount.textContent = '';
                 } else if (visibleCount === 0) {
                     searchCount.textContent = 'No se encontraron recetas con esa búsqueda.';
@@ -78,6 +100,6 @@ document.addEventListener('DOMContentLoaded', () => {
                     searchCount.textContent = `Mostrando ${visibleCount} de ${recipeCards.length} recetas`;
                 }
             }
-        });
-    }
-});
+        }, 200);
+    });
+}

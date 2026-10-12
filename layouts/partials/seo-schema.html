@@ -1,24 +1,54 @@
-{{ if .IsPage }}
+{{ if eq .Type "recipes" }} <!-- O utiliza .IsPage si todas tus páginas son recetas -->
 <script type="application/ld+json">
 {
   "@context": "https://schema.org/",
   "@type": "Recipe",
-  "name": "{{ .Title }}",
-  "description": "{{ .Description }}",
-  "keywords": "{{ if .Params.categories }}{{ delimit .Params.categories ", " }}{{ end }}",
+  "name": {{ .Title | jsonify }},
+  "description": {{ .Description | jsonify }},
+  "datePublished": {{ .Date.Format "2006-01-02T15:04:05Z07:00" | jsonify }},
+  {{ if .Params.image }}
+  "image": [
+    {{ .Params.image | absURL | jsonify }}
+  ],
+  {{ end }}
   "author": {
     "@type": "Organization",
-    "name": "{{ .Site.Title }}"
+    "name": {{ .Site.Title | jsonify }},
+    "url": {{ .Site.BaseURL | jsonify }}
   },
-  "prepTime": "PT{{ .Params.prep_time }}",
-  "recipeYield": "{{ .Params.servings }}",
-  "recipeCategory": "{{ if .Params.categories }}{{ index .Params.categories 0 }}{{ end }}",
-  "recipeCuisine": "{{ .Params.country }}",
-  "recipeIngredient": [
-    {{ range $i, $ing := .Params.ingredients }}
-      {{ if $i }},{{ end }}"{{ $ing }}"
+  {{ if .Params.prep_time }}
+  "prepTime": {{ printf "PT%s" .Params.prep_time | jsonify }},
+  {{ end }}
+  {{ if .Params.cook_time }}
+  "cookTime": {{ printf "PT%s" .Params.cook_time | jsonify }},
+  {{ end }}
+  {{ if .Params.servings }}
+  "recipeYield": {{ .Params.servings | jsonify }},
+  {{ end }}
+  {{ if .Params.categories }}
+  "recipeCategory": {{ index .Params.categories 0 | jsonify }},
+  "keywords": {{ delimit .Params.categories ", " | jsonify }},
+  {{ end }}
+  {{ if .Params.country }}
+  "recipeCuisine": {{ .Params.country | jsonify }},
+  {{ end }}
+  {{ if .Params.ingredients }}
+  "recipeIngredient": {{ .Params.ingredients | jsonify }},
+  {{ end }}
+  {{ if .Params.instructions }}
+  "recipeInstructions": [
+    {{ range $i, $step := .Params.instructions }}
+    {{ if $i }},{{ end }}{
+      "@type": "HowToStep",
+      "text": {{ $step | jsonify }}
+    }
     {{ end }}
-  ]
+  ],
+  {{ end }}
+  "mainEntityOfPage": {
+    "@type": "WebPage",
+    "@id": {{ .Permalink | jsonify }}
+  }
 }
 </script>
 {{ end }}

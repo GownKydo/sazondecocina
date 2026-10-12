@@ -1,55 +1,103 @@
 /* ==========================================================================
-   01. VARIABLES Y TEMAS (LIGHT / DARK)
+   1. SYSTEM DESIGN TOKENS & THEMES
    ========================================================================== */
 
+/* Color Palette Tokens (Raw Values) */
 :root {
-    /* Colores principales */
-    --primary-color: #d9381e;
-    --bg-body: #f9f9f9;
-    --bg-card: #ffffff;
-    --text-color: #222222;
-    --text-muted: #666666;
-    --border-color: #e2e8f0;
+  /* Brand */
+  --color-brand-primary: #d9381e;
+  --color-brand-hover: #b82c16;
 
-    /* Badges */
-    --badge-country-bg: #e0f2fe;
-    --badge-country-text: #0369a1;
-    --badge-cat-bg: #fef3c7;
-    --badge-cat-text: #92400e;
+  /* Neutral Scale - Light Mode */
+  --color-slate-50: #f8fafc;
+  --color-slate-100: #f1f5f9;
+  --color-slate-200: #e2e8f0;
+  --color-slate-600: #475569;
+  --color-slate-900: #0f172a;
 
-    /* Geometría y Sombras */
-    --radius-sm: 8px;
-    --radius-lg: 12px;
-    --shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
-    --transition: 0.3s ease;
+  /* Semantic Badge Colors (Light) */
+  --badge-sky-bg: #e0f2fe;
+  --badge-sky-text: #0369a1;
+  --badge-amber-bg: #fef3c7;
+  --badge-amber-text: #92400e;
+
+  /* Layout & Geometry Tokens */
+  --radius-sm: 0.375rem; /* 6px */
+  --radius-md: 0.5rem;   /* 8px */
+  --radius-lg: 0.75rem;  /* 12px */
+
+  --shadow-sm: 0 1px 2px 0 rgb(0 0 0 / 0.05);
+  --shadow-md: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
+  --shadow-lg: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1);
+
+  --motion-fast: 150ms cubic-bezier(0.4, 0, 0.2, 1);
+  --motion-normal: 250ms cubic-bezier(0.4, 0, 0.2, 1);
 }
 
-/* Modo oscuro automático por preferencia del sistema */
-@media (prefers-color-scheme: dark) {
-    :root:not([data-theme="light"]) {
-        --bg-body: #121212;
-        --bg-card: #1e1e1e;
-        --text-color: #e0e0e0;
-        --text-muted: #a0a0a0;
-        --border-color: #2d2d2d;
-        --badge-country-bg: #1e293b;
-        --badge-country-text: #38bdf8;
-        --badge-cat-bg: #451a03;
-        --badge-cat-text: #fcd34d;
-        --shadow: 0 4px 12px rgba(0, 0, 0, 0.4);
-    }
+/* ==========================================================================
+   2. SEMANTIC MAP & LIGHT THEME (DEFAULT)
+   ========================================================================== */
+
+:root,
+[data-theme="light"] {
+  /* Canvas & Surface */
+  --color-bg-app: var(--color-slate-50);
+  --color-bg-surface: #ffffff;
+  --color-border: var(--color-slate-200);
+
+  /* Typography */
+  --color-text-primary: var(--color-slate-900);
+  --color-text-muted: var(--color-slate-600);
+
+  /* Interactive */
+  --color-primary: var(--color-brand-primary);
+
+  /* Badges */
+  --badge-country-bg: var(--badge-sky-bg);
+  --badge-country-text: var(--badge-sky-text);
+  --badge-category-bg: var(--badge-amber-bg);
+  --badge-category-text: var(--badge-amber-text);
+
+  /* Shadows */
+  --elevation-card: var(--shadow-md);
 }
 
-/* Modo oscuro forzado manualmente con atributo */
+/* ==========================================================================
+   3. DARK THEME OVERRIDES
+   ========================================================================== */
+
+/* Dark Theme Variables Block */
 :root[data-theme="dark"] {
-    --bg-body: #121212;
-    --bg-card: #1e1e1e;
-    --text-color: #e0e0e0;
-    --text-muted: #a0a0a0;
-    --border-color: #2d2d2d;
-    --badge-country-bg: #1e293b;
+  --color-bg-app: #0f172a;
+  --color-bg-surface: #1e293b;
+  --color-border: #334155;
+
+  --color-text-primary: #f8fafc;
+  --color-text-muted: #94a3b8;
+
+  --badge-country-bg: rgba(56, 189, 248, 0.15);
+  --badge-country-text: #38bdf8;
+  --badge-category-bg: rgba(251, 191, 36, 0.15);
+  --badge-category-text: #fcd34d;
+
+  --elevation-card: 0 10px 15px -3px rgb(0 0 0 / 0.5), 0 4px 6px -4px rgb(0 0 0 / 0.5);
+}
+
+/* Fallback a preferencia del sistema si no se especificó data-theme implícito */
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --color-bg-app: #0f172a;
+    --color-bg-surface: #1e293b;
+    --color-border: #334155;
+
+    --color-text-primary: #f8fafc;
+    --color-text-muted: #94a3b8;
+
+    --badge-country-bg: rgba(56, 189, 248, 0.15);
     --badge-country-text: #38bdf8;
-    --badge-cat-bg: #451a03;
-    --badge-cat-text: #fcd34d;
-    --shadow: 0 4px 12px rgba(0, 0, 0, 0.4);
+    --badge-category-bg: rgba(251, 191, 36, 0.15);
+    --badge-category-text: #fcd34d;
+
+    --elevation-card: 0 10px 15px -3px rgb(0 0 0 / 0.5), 0 4px 6px -4px rgb(0 0 0 / 0.5);
+  }
 }

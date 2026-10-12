@@ -2,136 +2,290 @@
    07. DETALLE DE RECETA INDIVIDUAL (single.html)
    ========================================================================== */
 
+/* Contenedor Principal de la Receta */
 .recipe-single {
-    background: var(--bg-card);
-    padding: 2.5rem;
-    border-radius: var(--radius-lg);
-    box-shadow: var(--shadow);
+  background-color: var(--color-bg-surface);
+  padding: 3rem;
+  border-radius: var(--radius-lg);
+  box-shadow: var(--elevation-card);
+  border: 1px solid var(--color-border);
+  transition: background-color var(--motion-normal), border-color var(--motion-normal);
 }
 
+/* Encabezado */
 .recipe-header {
-    text-align: center;
-    margin-bottom: 1.5rem;
+  text-align: center;
+  max-width: 48rem;
+  margin-inline: auto;
+  margin-bottom: 2rem;
 }
 
 .recipe-title {
-    font-size: 2.2rem;
-    margin: 0.5rem 0;
+  font-size: clamp(2rem, 4vw, 2.75rem);
+  font-weight: 800;
+  color: var(--color-text-primary);
+  line-height: 1.15;
+  letter-spacing: -0.025em;
+  margin-block: 0.5rem 1rem;
+  text-wrap: balance;
 }
 
 .recipe-description {
-    color: var(--text-muted);
-    font-size: 1.1rem;
+  color: var(--color-text-muted);
+  font-size: 1.125rem;
+  line-height: 1.6;
+  text-wrap: pretty;
+}
+
+/* Imagen Principal / Banner */
+.recipe-banner {
+  width: 100%;
+  margin-bottom: 2.5rem;
+  overflow: hidden;
+  border-radius: var(--radius-lg);
 }
 
 .recipe-banner img {
-    width: 100%;
-    max-height: 420px;
-    object-fit: cover;
-    border-radius: var(--radius-lg);
-    margin-bottom: 2rem;
+  width: 100%;
+  aspect-ratio: 16 / 9;
+  max-height: 26.25rem; /* ~420px */
+  object-fit: cover;
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-sm);
+  display: block;
 }
 
 /* Ficha Técnica de Tiempos y Porciones */
 .recipe-info-bar {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(130px, 1fr));
-    gap: 1rem;
-    background-color: var(--bg-body);
-    padding: 1.25rem;
-    border-radius: var(--radius-lg);
-    margin-bottom: 2.5rem;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(8.75rem, 1fr));
+  gap: 1.25rem;
+  background-color: var(--color-bg-app);
+  padding: 1.5rem;
+  border-radius: var(--radius-lg);
+  margin-bottom: 3rem;
+  border: 1px solid var(--color-border);
 }
 
 .info-item {
-    display: flex;
-    align-items: center;
-    gap: 0.75rem;
+  display: flex;
+  align-items: center;
+  gap: 0.875rem;
 }
 
 .info-icon {
-    font-size: 1.8rem;
+  font-size: 1.75rem;
+  color: var(--color-primary);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
 }
 
 .info-text {
-    display: flex;
-    flex-direction: column;
+  display: flex;
+  flex-direction: column;
+  gap: 0.125rem;
 }
 
 .info-label {
-    font-size: 0.75rem;
-    text-transform: uppercase;
-    color: var(--text-muted);
-    font-weight: 600;
+  font-size: 0.75rem;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: var(--color-text-muted);
+  font-weight: 700;
 }
 
 .info-value {
-    font-size: 1rem;
-    font-weight: bold;
+  font-size: 1.0625rem;
+  font-weight: 700;
+  color: var(--color-text-primary);
 }
 
 /* Grid de Ingredientes + Preparación */
 .recipe-body-grid {
-    display: grid;
-    grid-template-columns: 1fr 2fr;
-    gap: 2.5rem;
+  display: grid;
+  grid-template-columns: 1fr 1.8fr;
+  gap: 3rem;
+  align-items: start;
 }
 
-/* Lista de Ingredientes con Checkbox */
+.recipe-section-title {
+  font-size: 1.375rem;
+  font-weight: 700;
+  color: var(--color-text-primary);
+  letter-spacing: -0.015em;
+  margin-bottom: 1.25rem;
+  padding-bottom: 0.5rem;
+  border-bottom: 2px solid var(--color-border);
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+/* Lista de Ingredientes Interactiva (Checkbox Customizado) */
 .ingredients-list {
-    list-style: none;
-    margin-top: 1rem;
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
 }
 
 .ingredient-item {
-    margin-bottom: 0.8rem;
+  background-color: var(--color-bg-app);
+  padding: 0.75rem 1rem;
+  border-radius: var(--radius-md);
+  border: 1px solid var(--color-border);
+  transition: border-color var(--motion-fast), background-color var(--motion-fast);
+}
+
+.ingredient-item:hover {
+  border-color: var(--color-text-muted);
 }
 
 .checkbox-container {
-    display: flex;
-    align-items: flex-start;
-    gap: 0.75rem;
-    cursor: pointer;
-    font-size: 1rem;
-    user-select: none;
+  display: flex;
+  align-items: center;
+  gap: 0.875rem;
+  cursor: pointer;
+  font-size: 0.9375rem;
+  color: var(--color-text-primary);
+  user-select: none;
+  position: relative;
 }
 
+/* Ocultar input nativo manteniendo accesibilidad */
 .checkbox-container input {
-    width: 1.2rem;
-    height: 1.2rem;
-    accent-color: var(--primary-color);
-    cursor: pointer;
-    margin-top: 0.2rem;
+  position: absolute;
+  opacity: 0;
+  cursor: pointer;
+  height: 0;
+  width: 0;
 }
 
-/* Tachar ingrediente cuando se marca la casilla */
-.checkbox-container input:checked + .checkmark + .ingredient-text,
+/* Checkmark Personalizado */
+.checkmark {
+  height: 1.25rem;
+  width: 1.25rem;
+  background-color: var(--color-bg-surface);
+  border: 2px solid var(--color-border);
+  border-radius: var(--radius-sm);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: 
+    background-color var(--motion-fast), 
+    border-color var(--motion-fast);
+  flex-shrink: 0;
+}
+
+.checkmark::after {
+  content: "";
+  width: 0.35rem;
+  height: 0.65rem;
+  border: solid white;
+  border-width: 0 2px 2px 0;
+  transform: rotate(45deg) scale(0);
+  transition: transform var(--motion-fast);
+}
+
+/* Estado Focus y Checked de Checkbox */
+.checkbox-container input:focus-visible ~ .checkmark {
+  outline: 2px solid var(--color-primary);
+  outline-offset: 2px;
+}
+
+.checkbox-container input:checked ~ .checkmark {
+  background-color: var(--color-primary);
+  border-color: var(--color-primary);
+}
+
+.checkbox-container input:checked ~ .checkmark::after {
+  transform: rotate(45deg) scale(1);
+}
+
+.ingredient-text {
+  transition: opacity var(--motion-fast), color var(--motion-fast);
+  line-height: 1.4;
+}
+
+/* Estado tachado al marcar ingrediente */
 .checkbox-container input:checked ~ .ingredient-text {
-    text-decoration: line-through;
-    opacity: 0.5;
+  text-decoration: line-through;
+  opacity: 0.5;
+  color: var(--color-text-muted);
 }
 
-/* Instrucciones y Contenido Markdown */
+/* Instrucciones y Preparación (Markdown Render) */
 .markdown-content {
-    line-height: 1.8;
-    margin-top: 1rem;
+  line-height: 1.75;
+  color: var(--color-text-primary);
 }
 
+.markdown-content p {
+  margin-bottom: 1.25rem;
+}
+
+/* Pasos numerados con formato de tarjetas */
 .markdown-content ol {
-    padding-left: 1.2rem;
+  list-style: none;
+  counter-reset: recipe-step;
+  display: flex;
+  flex-direction: column;
+  gap: 1.25rem;
+  padding-left: 0;
 }
 
-.markdown-content li {
-    margin-bottom: 1rem;
+.markdown-content ol li {
+  counter-increment: recipe-step;
+  position: relative;
+  padding-left: 3.25rem;
+  margin-bottom: 0;
 }
 
-/* Responsivo para móviles */
-@media (max-width: 768px) {
-    .recipe-body-grid {
-        grid-template-columns: 1fr;
-    }
+.markdown-content ol li::before {
+  content: counter(recipe-step);
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 2.25rem;
+  height: 2.25rem;
+  background-color: rgba(217, 56, 30, 0.1);
+  color: var(--color-primary);
+  font-weight: 800;
+  font-size: 0.9375rem;
+  border-radius: var(--radius-md);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 1px solid rgba(217, 56, 30, 0.2);
+}
 
-    .recipe-single {
-        padding: 1.5rem;
-    }
+.markdown-content ul {
+  padding-left: 1.5rem;
+  margin-bottom: 1.25rem;
+}
+
+.markdown-content ul li {
+  margin-bottom: 0.5rem;
+}
+
+/* ==========================================================================
+   ADAPTATIVO / RESPONSIVO
+   ========================================================================== */
+
+@media (max-width: 868px) {
+  .recipe-single {
+    padding: 1.75rem 1.25rem;
+  }
+
+  .recipe-body-grid {
+    grid-template-columns: 1fr;
+    gap: 2.5rem;
+  }
+
+  .recipe-info-bar {
+    padding: 1rem;
+    gap: 1rem;
+  }
 }

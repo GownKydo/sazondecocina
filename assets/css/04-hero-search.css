@@ -1,100 +1,166 @@
 /* ==========================================================================
-   04. SECCIÓN HERO Y BARRA DE BÚSQUEDA
+   04. HERO SECTION & LIVE SEARCH
    ========================================================================== */
 
+/* Hero Container */
 .hero-section {
-    background: linear-gradient(135deg, rgba(224, 86, 36, 0.08) 0%, rgba(217, 119, 6, 0.08) 100%);
-    border-radius: var(--radius-lg);
-    padding: 3.5rem 1.5rem;
-    text-align: center;
-    margin-bottom: 3rem;
-    border: 1px solid var(--border-color);
+  position: relative;
+  overflow: hidden;
+  background: linear-gradient(
+    135deg, 
+    rgba(217, 56, 30, 0.05) 0%, 
+    rgba(245, 158, 11, 0.05) 100%
+  );
+  border-radius: var(--radius-lg);
+  padding-block: 4rem 3.5rem;
+  padding-inline: 1.5rem;
+  text-align: center;
+  margin-bottom: 3rem;
+  border: 1px solid var(--color-border);
+  transition: background var(--motion-normal), border-color var(--motion-normal);
 }
 
 .hero-content {
-    max-width: 680px;
-    margin: 0 auto;
+  max-width: 42.5rem; /* ~680px */
+  margin-inline: auto;
 }
 
+/* Badge Decorativo */
 .hero-badge {
-    display: inline-block;
-    background-color: var(--primary-color);
-    color: #ffffff;
-    font-size: 0.85rem;
-    font-weight: 700;
-    padding: 0.35rem 0.85rem;
-    border-radius: 20px;
-    margin-bottom: 1rem;
-    text-transform: uppercase;
-    letter-spacing: 0.5px;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.375rem;
+  background-color: rgba(217, 56, 30, 0.1);
+  color: var(--color-primary);
+  font-size: 0.8125rem;
+  font-weight: 700;
+  padding: 0.375rem 0.875rem;
+  border-radius: 9999px; /* Pill shape */
+  margin-bottom: 1.25rem;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  border: 1px solid rgba(217, 56, 30, 0.2);
 }
 
+/* Tipografía Hero */
 .hero-title {
-    font-size: clamp(2rem, 5vw, 2.75rem);
-    font-weight: 800;
-    color: var(--text-color);
-    line-height: 1.2;
-    margin-bottom: 0.75rem;
+  font-size: clamp(2rem, 5vw, 3rem);
+  font-weight: 800;
+  color: var(--color-text-primary);
+  line-height: 1.15;
+  letter-spacing: -0.03em;
+  margin-bottom: 1rem;
+  text-wrap: balance;
 }
 
 .hero-subtitle {
-    font-size: 1.1rem;
-    color: var(--text-muted);
-    margin-bottom: 2rem;
+  font-size: 1.125rem;
+  color: var(--color-text-muted);
+  line-height: 1.6;
+  margin-bottom: 2.25rem;
+  text-wrap: pretty;
 }
 
-/* Buscador en vivo */
+/* Buscador en Vivo */
 .search-wrapper,
 .search-container {
-    max-width: 550px;
-    margin: 0 auto;
+  max-width: 34.375rem; /* ~550px */
+  margin-inline: auto;
 }
 
 .search-box {
-    position: relative;
-    display: flex;
-    align-items: center;
-    width: 100%;
+  position: relative;
+  display: flex;
+  align-items: center;
+  width: 100%;
 }
 
 .search-icon {
-    position: absolute;
-    left: 1.2rem;
-    font-size: 1.1rem;
-    pointer-events: none;
-    opacity: 0.6;
-    z-index: 2;
+  position: absolute;
+  left: 1.25rem;
+  font-size: 1.125rem;
+  color: var(--color-text-muted);
+  pointer-events: none;
+  z-index: 2;
+  transition: color var(--motion-fast);
 }
 
-/* Estilos unificados para el input (funciona con id #recipe-search o etiqueta input) */
+/* Input de Búsqueda Normalizado */
 .search-box input,
 #recipe-search {
-    width: 100%;
-    padding: 1rem 1rem 1rem 3.2rem;
-    font-size: 1rem;
-    border-radius: 50px;
-    border: 2px solid var(--border-color);
-    background-color: var(--bg-card);
-    color: var(--text-color);
-    box-shadow: var(--shadow);
-    outline: none;
-    transition: border-color var(--transition), box-shadow var(--transition);
+  width: 100%;
+  padding-block: 0.875rem;
+  padding-inline: 3.25rem 1.25rem;
+  font-size: 1rem;
+  border-radius: 9999px;
+  border: 1.5px solid var(--color-border);
+  background-color: var(--color-bg-surface);
+  color: var(--color-text-primary);
+  box-shadow: var(--shadow-sm);
+  outline: none;
+  transition: 
+    border-color var(--motion-fast), 
+    box-shadow var(--motion-fast),
+    background-color var(--motion-fast);
+}
+
+.search-box input::placeholder,
+#recipe-search::placeholder {
+  color: var(--color-text-muted);
+  opacity: 0.75;
+}
+
+/* Estados Interactivos y Foco */
+.search-box input:hover,
+#recipe-search:hover {
+  border-color: var(--color-text-muted);
 }
 
 .search-box input:focus,
 #recipe-search:focus {
-    border-color: var(--primary-color);
-    box-shadow: 0 0 0 4px rgba(224, 86, 36, 0.15);
+  border-color: var(--color-primary);
+  box-shadow: 0 0 0 4px rgba(217, 56, 30, 0.15), var(--shadow-md);
+  background-color: var(--color-bg-surface);
 }
 
-/* Contador de resultados unificado */
+/* Cambiar el color del icono dinámicamente al enfocar el input */
+.search-box:focus-within .search-icon {
+  color: var(--color-primary);
+}
+
+/* Contador de Resultados */
 .search-count-text,
 .search-count {
-    display: block;
-    margin-top: 0.75rem;
-    font-size: 0.9rem;
-    font-weight: 600;
-    color: var(--primary-color);
-    text-align: center;
-    min-height: 1.35rem;
+  display: block;
+  margin-top: 0.875rem;
+  font-size: 0.875rem;
+  font-weight: 600;
+  color: var(--color-primary);
+  text-align: center;
+  min-height: 1.35rem;
+  transition: opacity var(--motion-fast);
+}
+
+/* ==========================================================================
+   ADAPTATIVO / RESPONSIVO
+   ========================================================================== */
+
+@media (max-width: 640px) {
+  .hero-section {
+    padding-block: 2.5rem 2rem;
+    padding-inline: 1rem;
+    margin-bottom: 2rem;
+    border-radius: var(--radius-md);
+  }
+
+  .hero-subtitle {
+    font-size: 1rem;
+    margin-bottom: 1.75rem;
+  }
+
+  .search-box input,
+  #recipe-search {
+    padding-block: 0.75rem;
+    font-size: 0.9375rem;
+  }
 }

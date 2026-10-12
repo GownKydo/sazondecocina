@@ -39,4 +39,19 @@ name = 'Contacto'
 url = '/contacto/'
 weight = 6
 
+[[menus.footer]]
+  name = "Acerca de"
+  pageRef = "/acerca"
+  weight = 10
+
+[[menus.footer]]
+  name = "Contacto"
+  pageRef = "/contacto"
+  weight = 20
+
+[[menus.footer]]
+  name = "Política de Privacidad"
+  pageRef = "/privacidad"
+  weight = 30
+
 enableRobotsTXT = true

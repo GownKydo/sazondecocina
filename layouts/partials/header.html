@@ -1,28 +1,58 @@
-<header class="main-header">
-    <div class="logo">
-        <a href="{{ .Site.Home.RelPermalink }}">🌮 Recetario Latino</a>
+<header class="site-header" id="site-header">
+    <div class="header-container">
+        <!-- Marca / Logo -->
+        <div class="header-brand">
+            <a href="{{ .Site.Home.RelPermalink }}" class="brand-logo" aria-label="{{ .Site.Title }} - Inicio">
+                <span class="logo-icon" aria-hidden="true">🌮</span>
+                <span class="logo-text">Recetario Latino</span>
+            </a>
+        </div>
+
+        <!-- Botón para menú hamburguesa (Móvil) -->
+        <button 
+            id="mobile-menu-toggle" 
+            class="mobile-menu-btn" 
+            type="button" 
+            aria-expanded="false" 
+            aria-controls="primary-navigation"
+            aria-label="Abrir menú de navegación"
+        >
+            <span class="hamburger-bar"></span>
+            <span class="hamburger-bar"></span>
+            <span class="hamburger-bar"></span>
+        </button>
+
+        <!-- Navegación Principal -->
+        <nav class="main-nav" id="primary-navigation" aria-label="Navegación principal">
+            <ul class="nav-list">
+                {{ $currentPage := . }}
+                {{ range .Site.Menus.main }}
+                    {{ $active := or ($currentPage.IsMenuCurrent "main" .) ($currentPage.HasMenuCurrent "main" .) }}
+                    <li class="nav-item">
+                        <a 
+                            href="{{ .URL | relLangURL }}" 
+                            class="nav-link{{ if $active }} active{{ end }}"
+                            {{ if $active }}aria-current="page"{{ end }}
+                        >
+                            {{ .Name }}
+                        </a>
+                    </li>
+                {{ end }}
+            </ul>
+
+            <!-- Acciones / Herramientas del Header -->
+            <div class="header-actions">
+                <!-- Botón de Modo Oscuro/Claro -->
+                <button 
+                    id="theme-toggle" 
+                    class="theme-btn" 
+                    type="button" 
+                    aria-label="Cambiar tema"
+                    title="Cambiar tema"
+                >
+                    <span class="theme-icon" aria-hidden="true">🌙</span>
+                </button>
+            </div>
+        </nav>
     </div>
-
-    <nav class="main-nav">
-        <ul>
-            {{ $currentPage := . }}
-            {{ range .Site.Menus.main }}
-                {{ $active := or ($currentPage.IsMenuCurrent "main" .) ($currentPage.HasMenuCurrent "main" .) }}
-                <li>
-                    <a 
-                        href="{{ .URL | relLangURL }}" 
-                        class="{{ if $active }}active{{ end }}"
-                        {{ if $active }}aria-current="page"{{ end }}
-                    >
-                        {{ .Name }}
-                    </a>
-                </li>
-            {{ end }}
-
-            <li>
-                <!-- Botón de Modo Oscuro/Claro integrado con app.js -->
-                <button id="theme-toggle" class="theme-btn" type="button" aria-label="Cambiar tema">🌙</button>
-            </li>
-        </ul>
-    </nav>
 </header>
